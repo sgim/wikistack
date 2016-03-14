@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/wikistack");
 var db = mongoose.connection;
+var marked = require("marked");
 var Schema = mongoose.Schema;
 db.on("error", console.error.bind(console, "mongodb connection error:"));
 
@@ -9,6 +10,9 @@ var user = new Schema({
 	email: {type: String, unique: true, required: true}
 });
 var User = db.model("User", user);
+user.virtual("link").get(function() {
+  return "/wiki/users/" + this._id;
+});
 
 var page = new Schema({
 	title: {type: String, required: true},
@@ -24,6 +28,9 @@ var page = new Schema({
 });
 page.virtual("route").get(function () {
 	return "/wiki/" + this.urlTitle;
+});
+page.virtual("renderedContent").get(function () {
+  return marked(this.content);
 });
 page.pre("save", function (next) {
   this.urlTitle = this.urlTitle.replace(/[^\w ]/g, "").replace(/ /g, "_") ||

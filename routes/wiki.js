@@ -40,7 +40,6 @@ router.post("/", function (req, res) {
 			email: obj.email
 		});
 		author.save();
-		//console.log(author._id);
 		new Page({
 			title: obj.title,
 			urlTitle: obj.title,
@@ -67,6 +66,11 @@ router.get("/:title", function (req, res) {
 		res.render("addPage");
 	} else if (title === "search") {
 	  res.render("search");
+	} else if (title === "users") {
+		User.find()
+	  .then(function (users) {
+      res.render("users", {header: "Users", users: users});
+		});
 	}	else if (title) {
 		Page.findOne({urlTitle: title})
 		.populate("author")
@@ -89,8 +93,9 @@ router.get("/:title/similar", function (req, res) {
 router.get("/users/:id", function (req, res) {
   var id = req.params.id;
 	Page.find({author: id})
+	.populate("author")
 	.then(function(pages) {
-		res.render("index",{pages : pages, header : "Author's page"});
+		res.render("index",{pages : pages, header : pages[0].author.name + "'s page"});
 	});
 
 });

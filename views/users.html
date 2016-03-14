@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h3>{{header}}</h3>
+  <hr>
+	<ul class="list-unstyled">
+		{% if users.length > 0 %}
+			{% for user in users %}
+				{{user | userLink}}
+			{% endfor %}
+    {% else %}
+		  There are no users. Why don't you <a href='/wiki/add'>contribute</a>?
+		{% endif %}
+
+	</ul>
+
+{% endblock %}

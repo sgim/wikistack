@@ -18,5 +18,8 @@ swig.setDefaults({ cache: false });
 
 app.use(express.static(__dirname + '/public'));
 app.use("/wiki", wikiRouter);
+app.all("/", function (req, res) {
+	res.redirect("/wiki");
+});
 
 app.listen(3000);
