@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h3>{{title}} <small> (<a href="similar">Similar</a>)</small></h3>
+<h4>by <a href="{{author | userUrl}}">{{author.name}}</a></h4>
+<form method="POST" action="update">
+<div><input name="tags" value="{{tags | join(" ")}}"/></div>
+  <hr/>
+	<div>{{author.name}}</div>
+	<div class="page-body">
+		<textarea name="content">{{content}}</textarea>
+	</div>
+	<hr/>
+	<button type="submit" class="btn btn-primary">submit changes</button>
+</form>
+<!--<a href="update" class="btn btn-primary">submit changes</a>--!>
+	<a href="delete" class="btn btn-danger">delete this page</a>
+{% endblock %}

@@ -82,6 +82,37 @@ router.get("/:title", function (req, res) {
 	}
 });
 
+router.get("/:title/edit", function (req, res) {
+  var title = req.params.title;
+	Page.findOne({urlTitle: title})
+	.populate("author")
+	.then(function (page) {
+		res.render("editwiki", page);
+	}, function (err) {
+		res.render("error", err);
+	});
+});
+router.get("/:title/delete", function (req, res) {
+  var title = req.params.title;
+	Page.findOne({urlTitle: title})
+	.remove()
+	.exec(function (err) {
+		if (err) {
+			res.render("error", err);
+		} else {
+			res.redirect("/");
+		}
+	});
+});
+router.post("/:title/update", function (req, res) {
+  var title = req.params.title;
+	var updatedPost = req.body;
+	Page.update({urlTitle:title}, {$set: updatedPost})
+	.then(function(page) {
+    res.redirect("/wiki/" + title);
+	});
+});
+
 router.get("/:title/similar", function (req, res) {
   var title = req.params.title;
 	Page.findOne({urlTitle: title})
@@ -95,7 +126,15 @@ router.get("/users/:id", function (req, res) {
 	Page.find({author: id})
 	.populate("author")
 	.then(function(pages) {
-		res.render("index",{pages : pages, header : pages[0].author.name + "'s page"});
+		console.log(pages);
+		if (pages.length) {
+		  res.render("index",{pages : pages, header : pages[0].author.name + "'s page"});
+		} else {
+      User.findOne({_id: id})
+		  .then(function (user) {
+				res.render("index", {pages: [], header: user.name + "'s page"});
+      });
+		}
 	});
 
 });
