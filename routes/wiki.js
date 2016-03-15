@@ -139,9 +139,4 @@ router.get("/users/:id", function (req, res) {
 
 });
 
-router.get("/add", function (req, res) {
-  //res.render("addPage");
-});
-
-
 module.exports = router;

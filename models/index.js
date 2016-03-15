@@ -32,7 +32,7 @@ page.virtual("route").get(function () {
 page.virtual("renderedContent").get(function () {
   return marked(this.content);
 });
-page.pre("save", function (next) {
+page.pre("validate", function (next) {
 	var that = this;
   this.urlTitle = this.urlTitle.replace(/[^\w ]/g, "").replace(/ /g, "_") ||
 	                  Math.random().toString(36).substring(2, 7);

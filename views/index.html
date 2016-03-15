@@ -6,9 +6,7 @@
 	<ul class="list-unstyled">
 		{% if pages.length > 0 %}
 			{% for page in pages %}
-			<!--	  <li><a href="{{page.route}}">{{page.title}}</a></li>  --!>
 				{{page | pageLink}}
-        
 			{% endfor %}
     {% else %}
 		  There are no pages. Why don't you <a href='/wiki/add'>add one</a>?
